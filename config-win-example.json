@@ -1,0 +1,27 @@
+{
+    "pollings": [
+        {
+            "path": {
+                "in": "C:\\source\\path\\example\\Movie",
+                "out": ["C:\\dest\\path\\example\\Movie","C:\\another\\dest\\path\\example\\Movie","ftp://my-server/dest/Movie"]
+            },
+            "matches": [".*\\.mp4$"],
+            "ignores": ["\\\\.*_tmp\\\\"],
+            "move": true,
+            "recursive": true
+        },
+        {
+            "path": {
+                "in": "C:\\source\\path\\example\\Series",
+                "out": ["C:\\dest\\path\\example\\Series","ftp://my-server/dest/Series"]
+            },
+            "matches": [".*\\.mp4$"],
+            "ignores": ["\\\\.*_tmp\\\\"],
+            "move": false,
+            "recursive": true
+        }
+    ],
+    "debug":{
+        "level" : "DEBUG"
+    }
+}
