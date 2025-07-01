@@ -15,12 +15,13 @@ It's ideal for backups and automating file workflows between local folders and r
 - Optional check ahd manage for already existing file
 
 ## Download
-Download from [release page](https://github.com/Seroper-real/file-poller/releases)
 
+Download from [release page](https://github.com/Seroper-real/file-poller/releases)
 
 ## Configuration
 
 ### config.json
+
 In execution directory must be present a configuration file called `config.json` with the following structure:
 
 - `pollings[]`: list of active pollings
@@ -35,27 +36,31 @@ In execution directory must be present a configuration file called `config.json`
 You can use a `config-env-example.json` as a reference template.
 
 ### Ftp support
+
 You can define a remote ftp path by using the connection string to configure all parameters
 
 ```
 ftp://username:password@server.com:21/base/path
 ```
 
-
 ## Quick start for local run
 
 Create your own config.json as mentioned above.
 
 Install requirements specified in requirements.txt
+
 ```bash
 pip install -r requirements.txt
 ```
-Launch the script:
+
+Launch the script (you must have config.json in your working directory):
+
 ```bash
-python main.py
+py src/main.py
 ```
 
 ### Requirements
+
 - Python 3.13.3+
 
 ## Note

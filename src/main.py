@@ -2,47 +2,46 @@ import logging
 import json
 import os
 import time
+from typing import Any, cast
 from watchdog.observers import Observer
 from poller_handler import PollerHandler
 from command import Producer,Consumer
 import utils
 
-def load_config(path='config.json'):
+def load_config(path: str='config.json') -> dict[str, Any]:
     with open(path, 'r') as file:
-        return json.load(file)
+        return cast(dict[str, Any], json.load(file))
 
-def check_path(path):
+def check_path(path: str) -> None:
     if utils.is_standard_path(path) and not os.path.exists(path):
         raise Exception(f"Path {path} does not exist. Check your configuration")
 
-def setup_debugger(config):
-    conf_level = config['debug']['level']
-    level = {}
+def setup_debugger(config: dict[str, Any]) -> None:
+    conf_level: str = config['debug']['level']
+    level: int = logging.ERROR
     if conf_level == "DEBUG":
         level = logging.DEBUG
     elif conf_level == "INFO":
         level = logging.INFO
     elif conf_level == "WARNING":
         level = logging.WARNING
-    elif conf_level == "ERROR":
-        level = logging.ERROR
     logging.basicConfig(level=level, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 
 if __name__ == "__main__":
-    config = load_config()
+    config: dict[str, Any] = load_config()
     setup_debugger(config)
 
     #Setup queue for async copy of files
-    producer = Producer()
-    consumer = Consumer(producer)
+    producer: Producer = Producer()
+    consumer: Consumer = Consumer(producer)
     consumer.start()
     logging.debug(f"Consumer started")
 
-    observers = []
-    handlers = []
+    observers: list[Any] = []
+    handlers: list[PollerHandler] = []
     for polling in config['pollings']:
-        path = polling['path']
+        path: dict[str, Any] = polling['path']
         check_path(path['in'])
         for out_path in path['out']:
             check_path(out_path)
@@ -58,7 +57,7 @@ if __name__ == "__main__":
     logging.info(f"Monitorings started")
     
 
-    ans = utils.ask_bool("Do you want to search and process already existing file in polling paths? [y/n]")
+    ans: bool = utils.ask_bool("Do you want to search and process already existing file in polling paths? [y/n]")
     if ans:
         for handler in handlers:
             handler.manage_existing()
@@ -75,4 +74,3 @@ if __name__ == "__main__":
     for observer in observers:
         observer.join()
     consumer.join()
-
