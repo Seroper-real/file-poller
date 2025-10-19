@@ -22,7 +22,7 @@ class PollerHandler(FileSystemEventHandler):
                 logging.info(f"Found file: {path_str}")
                 self.producer.add(CopyCommand(base_path=self.base_path,out_paths=self.out_paths,event_path=path_str,remove_in=self.move))
             else:
-                logging.info(f"Skip file: {path_str}")
+                logging.debug(f"Skip file: {path_str}")
 
     def on_created(self, event: FileSystemEvent) -> None:
         self.handle_event(event.is_directory, event.src_path)
